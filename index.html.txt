@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>來自研究室的緊急通知</title>
+    <style>
+        :root { --main-pink: #ff85a1; --bg-color: #fff5f7; }
+        body { 
+            background-color: var(--bg-color); 
+            font-family: 'PingFang TC', 'Microsoft JhengHei', sans-serif;
+            margin: 0; display: flex; justify-content: center; align-items: center;
+            height: 100vh; overflow: hidden; touch-action: manipulation;
+        }
+        /* 漂浮愛心動畫 */
+        .heart {
+            position: absolute; color: var(--main-pink);
+            font-size: 20px; animation: float 3s linear infinite; opacity: 0;
+        }
+        @keyframes float {
+            0% { transform: translateY(100vh) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(-10vh) rotate(360deg); opacity: 0; }
+        }
+
+        .card {
+            background: white; padding: 30px; border-radius: 25px;
+            box-shadow: 0 10px 30px rgba(255, 133, 161, 0.2);
+            text-align: center; width: 85%; max-width: 350px;
+            z-index: 10; display: none; /* 彈窗完才顯示 */
+        }
+        h1 { color: var(--main-pink); font-size: 24px; margin-bottom: 10px; }
+        p { color: #666; line-height: 1.8; font-size: 15px; }
+        
+        .btn-group { margin-top: 30px; position: relative; height: 120px; }
+        button {
+            padding: 12px 30px; font-size: 16px; border: none;
+            border-radius: 50px; cursor: pointer; transition: 0.2s;
+            width: 80%; position: absolute; left: 10%;
+        }
+        #yes-btn { background-color: var(--main-pink); color: white; top: 0; font-weight: bold; }
+        #no-btn { background-color: #eee; color: #999; top: 60px; }
+    </style>
+</head>
+<body>
+
+    <div class="card" id="main-card">
+        <h1>Happy Birthday! 🎂</h1>
+        <p>
+            親愛的，生日快樂！<br>
+            雖然我平時可能在忙著做 CVD 鑽石生長，<br>
+            但對你的愛，熱傳導係數是無限大。<br>
+            <br>
+            <b>今晚願意跟我去東區吃大餐嗎？</b>
+        </p>
+        
+        <div class="btn-group">
+            <button id="yes-btn">我非常願意！❤️</button>
+            <button id="no-btn">我拒絕 (點不到我)</button>
+        </div>
+    </div>
+
+    <script>
+        // 1. 趣味連環彈窗
+        window.onload = function() {
+            setTimeout(() => {
+                alert("⚠️ 系統警告：偵測到附近有極高能量的可愛熱源！");
+                alert("正在進行材料分析...");
+                alert("分析結果：能量來源是妳。");
+                alert("今日特殊指令：不准生氣、不准不開心、只能快樂。");
+                
+                let confirmLove = confirm("妳知道妳是世界上最棒的女朋友嗎？");
+                if(confirmLove) {
+                    alert("很好，看來系統運作正常。");
+                } else {
+                    alert("偵測到系統誤差，強制修正為：妳就是最棒的！");
+                }
+                
+                document.getElementById('main-card').style.display = 'block';
+                startHearts();
+            }, 500);
+        };
+
+        // 2. 漂浮愛心特效
+        function startHearts() {
+            setInterval(() => {
+                const heart = document.createElement('div');
+                heart.innerHTML = '❤️';
+                heart.className = 'heart';
+                heart.style.left = Math.random() * 100 + 'vw';
+                heart.style.animationDuration = (Math.random() * 3 + 2) + 's';
+                document.body.appendChild(heart);
+                setTimeout(() => heart.remove(), 5000);
+            }, 300);
+        }
+
+        // 3. 讓「拒絕」按鈕永遠抓不到 (支援手機觸控)
+        const noBtn = document.getElementById('no-btn');
+        const moveBtn = (e) => {
+            e.preventDefault();
+            const x = Math.random() * (window.innerWidth - 150);
+            const y = Math.random() * (window.innerHeight - 50);
+            noBtn.style.position = 'fixed';
+            noBtn.style.left = x + 'px';
+            noBtn.style.top = y + 'px';
+        };
+
+        noBtn.addEventListener('touchstart', moveBtn);
+        noBtn.addEventListener('mouseover', moveBtn);
+
+        // 4. 點擊願意的驚喜
+        document.getElementById('yes-btn').onclick = function() {
+            alert("💖 訂位確認成功！");
+            alert("Alles Gute zum Geburtstag! (德文的生日快樂！)");
+            alert("待會見，我最愛的人。");
+            // 這裡可以換成妳們的合照網址
+            // window.location.href = "https://your-photo-link.com"; 
+        };
+    </script>
+</body>
+</html>
