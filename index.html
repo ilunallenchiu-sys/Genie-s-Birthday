@@ -7,37 +7,35 @@
     <link href="https://fonts.googleapis.com/css2?family=Klee+One:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
     <style>
-        :root { --wood-bg: #d7b594; --text-color: #5d4037; }
+        :root { --text-color: #5d4037; }
         body, html { margin: 0; padding: 0; height: 100%; font-family: 'Klee One', cursive; background: #8d6e63; overflow: hidden; }
         
-        /* 木質調背景 */
+        /* 木質調背景 [cite: 6, 13] */
         .swiper { width: 100%; height: 100%; background: #e0c9a6 url('https://www.transparenttextures.com/patterns/wood-pattern.png'); }
-        .swiper-slide { display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 20px; box-sizing: border-box; color: var(--text-color); }
+        .swiper-slide { display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 20px; box-sizing: border-box; }
 
-        .content-card { background: rgba(255, 255, 255, 0.85); padding: 25px; border-radius: 20px; border: 2px solid #5d4037; width: 85%; max-width: 400px; position: relative; box-shadow: 0 10px 20px rgba(0,0,0,0.2); min-height: 450px; }
-        .photo-box { width: 100%; aspect-ratio: 4/5; background: #fff; margin-bottom: 15px; border-radius: 10px; overflow: hidden; display: flex; align-items: center; justify-content: center; border: 1px solid #ddd; }
+        .content-card { background: rgba(255, 255, 255, 0.85); padding: 20px; border-radius: 20px; border: 2px solid #5d4037; width: 85%; max-width: 380px; min-height: 480px; box-shadow: 0 10px 20px rgba(0,0,0,0.1); display: flex; flex-direction: column; justify-content: center; align-items: center; }
+        .photo-box { width: 100%; aspect-ratio: 4/5; background: #fff; margin-bottom: 10px; border-radius: 10px; overflow: hidden; border: 1px solid #ddd; position: relative; }
         .photo-box img { width: 100%; height: 100%; object-fit: cover; }
         
-        /* 手寫文字樣式 */
-        .typewriter-text { 
-            font-size: 18px; 
-            line-height: 1.8; 
-            text-align: left; 
-            min-height: 100px; 
-            white-space: pre-wrap; /* 保留換行 */
-        }
-        
-        /* 游標效果 */
-        .typewriter-text::after { content: "|"; animation: blink 0.7s infinite; margin-left: 5px; color: var(--text-color); }
+        /* 手寫打字機效果 */
+        .typewriter-text { font-size: 18px; line-height: 1.6; text-align: left; width: 100%; min-height: 80px; white-space: pre-wrap; color: var(--text-color); }
+        .typewriter-text::after { content: "|"; animation: blink 0.7s infinite; }
         @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
 
-        h1 { margin: 5px 0; font-size: 26px; }
-        .date { font-size: 18px; margin-bottom: 15px; color: #795548; font-weight: bold; }
+        /* 遊戲區域  */
+        #gameWrapper { display: none; width: 100%; flex-direction: column; align-items: center; }
+        #gameCanvas { background: rgba(255,255,255,0.4); border: 2px solid #5d4037; border-radius: 10px; touch-action: none; width: 300px; height: 350px; }
+        .game-controls { display: flex; gap: 40px; margin-top: 15px; }
+        .ctrl-btn { width: 60px; height: 60px; background: #5d4037; color: white; border: none; border-radius: 50%; font-size: 24px; touch-action: manipulation; }
+        .game-info { font-size: 20px; margin-bottom: 10px; font-weight: bold; color: var(--text-color); }
+
+        /* 影片  */
+        #videoOverlay { position: fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.9); display:none; z-index:1000; justify-content:center; align-items:center; }
+        video { width: 90%; border-radius: 10px; }
         
-        /* 遊戲畫布與影片樣式 */
-        #gameCanvas { background: rgba(255,255,255,0.3); border: 2px solid #5d4037; border-radius: 15px; display: none; touch-action: none; width: 100%; max-width: 300px; }
-        #videoOverlay { position: fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.95); display:none; z-index:1000; justify-content:center; align-items:center; }
-        video { width: 95%; max-width: 500px; border-radius: 10px; }
+        h1 { font-size: 24px; margin: 5px 0; }
+        .hint { font-size: 12px; opacity: 0.6; margin-top: 10px; }
     </style>
 </head>
 <body>
@@ -48,97 +46,145 @@
             <div class="content-card">
                 <h1>HAPPY BIRTHDAY</h1>
                 <h1>TO GENIE</h1>
-                <div class="date">Apr. 24, 2026</div>
-                <div class="photo-box"><img src="p1.jpg" alt="Photo 1"></div>
-                <p style="font-size: 12px; opacity: 0.6;">(點擊或向右滑動翻閱)</p>
+                <p style="font-weight:bold;">Apr. 24, 2026</p>
+                <div class="photo-box"><img src="p1.jpg"></div>
+                <p class="hint">點擊或向右滑出現下一頁 [cite: 5]</p>
             </div>
         </div>
 
         <div class="swiper-slide">
             <div class="content-card">
-                <div class="photo-box"><img src="p2.jpg" alt="Photo 2"></div>
-                <div class="typewriter-text" data-text="親愛的 Genie：\n這是我為妳準備的第一個驚喜。\n希望妳會喜歡這份手寫的感覺。"></div>
+                <div class="photo-box"><img src="p2.jpg"></div>
+                <div class="typewriter-text" data-text="Genie，生日快樂！\n這是我們一起度過的特別日子。\n希望這份手寫的溫度能傳遞給妳。"></div>
             </div>
         </div>
-
         <div class="swiper-slide">
             <div class="content-card">
-                <div class="photo-box"><img src="p3.jpg" alt="Photo 3"></div>
-                <div class="typewriter-text" data-text="雖然平時都在忙著研究鑽石，\n但對妳的愛比鑽石更堅硬。"></div>
+                <div class="photo-box"><img src="p3.jpg"></div>
+                <div class="typewriter-text" data-text="就像我研究的 CVD 鑽石一樣，\n我對妳的心意也是恆久不變的。"></div>
             </div>
         </div>
 
         <div class="swiper-slide">
             <div class="content-card">
                 <div class="photo-box" onclick="playVideo()">
-                    <img src="p5.jpg" alt="Photo 5">
-                    <div style="position:absolute; font-size:60px; color:white;">▶️</div>
+                    <img src="p5.jpg">
+                    <div style="position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); font-size:60px; color:white;">▶️</div>
                 </div>
-                <div class="typewriter-text" data-text="點擊照片看看驚喜影片吧！"></div>
+                <div class="typewriter-text" data-text="點擊照片出現驚喜影片 "></div>
             </div>
         </div>
 
         <div class="swiper-slide">
-            <h1>🍰 接蛋糕挑戰</h1>
-            <canvas id="gameCanvas" width="300" height="400"></canvas>
-            <button id="startBtn" onclick="startGame()" style="padding:15px 40px; font-size:20px; background:#5d4037; color:white; border:none; border-radius:50px;">開始遊戲</button>
+            <div class="content-card" id="gameSlideContent">
+                <h1 id="gameTitle">🍰 接蛋糕挑戰</h1>
+                <div id="gameWrapper">
+                    <div class="game-info">剩餘: <span id="timer">30</span>s | 分數: <span id="score">0</span></div>
+                    <canvas id="gameCanvas" width="300" height="350"></canvas>
+                    <div class="game-controls">
+                        <button class="ctrl-btn" id="leftBtn">◀</button>
+                        <button class="ctrl-btn" id="rightBtn">▶</button>
+                    </div>
+                </div>
+                <button id="startBtn" onclick="initGame()" style="padding:15px 30px; font-size:20px; background:#5d4037; color:white; border:none; border-radius:50px; cursor:pointer;">開始遊戲</button>
+                <p id="gameHint" class="hint">30秒內接到最多蛋糕，一個5分 </p>
+            </div>
         </div>
 
         <div class="swiper-slide">
             <div class="content-card">
-                <div class="photo-box"><img src="p6.jpg" alt="Photo 6"></div>
-                <div class="typewriter-text" data-text="Happy Birthday, Genie!\n願妳的 2026 年充滿笑容。"></div>
+                <h1>遊戲結果 </h1>
+                <p style="font-size:40px; margin:20px 0;">得分：<span id="finalScore">0</span></p>
+                <div class="typewriter-text" data-text="妳太厲害了！\n這是我見過最強的接蛋糕大師。"></div>
+                <p class="hint">向右滑看最後一段話</p>
+            </div>
+        </div>
+
+        <div class="swiper-slide">
+            <div class="content-card">
+                <div class="photo-box"><img src="p6.jpg"></div>
+                <div class="typewriter-text" data-text="最後，祝妳生日快樂！\n願妳在 2026 年的一切都如願以償。\nAlles Gute zum Geburtstag! ❤️"></div>
             </div>
         </div>
     </div>
 </div>
 
-<div id="videoOverlay" onclick="closeVideo()">
-    <video id="birthdayVideo" controls src="v1.mp4" playsinline></video>
+<div id="videoOverlay" onclick="this.style.display='none'">
+    <video id="birthdayVideo" controls src="v1.mp4"></video>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 <script>
-    // 1. 初始化翻頁
+    // --- 基礎設定 ---
     const swiper = new Swiper('.swiper', { 
-        loop: false, 
-        mousewheel: true,
-        on: {
-            slideChangeTransitionEnd: function () {
-                startTyping(this.activeIndex); // 切換結束後觸發打字
-            }
-        }
+        on: { slideChangeTransitionEnd: function() { startTyping(this.activeIndex); } } 
     });
 
-    // 2. 打字機邏輯
     function startTyping(index) {
-        const activeSlide = document.querySelectorAll('.swiper-slide')[index];
-        const textElement = activeSlide.querySelector('.typewriter-text');
-        
-        if (textElement && !textElement.getAttribute('data-done')) {
-            const fullText = textElement.getAttribute('data-text').replace(/\\n/g, '\n');
-            let i = 0;
-            textElement.innerHTML = "";
-            textElement.setAttribute('data-done', 'true'); // 標記已跑過動畫
-
-            function type() {
-                if (i < fullText.length) {
-                    textElement.innerHTML += fullText.charAt(i);
-                    i++;
-                    setTimeout(type, 100); // 打字速度，越小越快
-                }
-            }
+        const slide = document.querySelectorAll('.swiper-slide')[index];
+        const el = slide.querySelector('.typewriter-text');
+        if (el && !el.dataset.done) {
+            const str = el.dataset.text.replace(/\\n/g, '\n');
+            let i = 0; el.innerHTML = ""; el.dataset.done = "true";
+            function type() { if (i < str.length) { el.innerHTML += str[i++]; setTimeout(type, 100); } }
             type();
         }
     }
-
-    // 初始頁面手寫
     window.onload = () => startTyping(0);
+    function playVideo() { document.getElementById('videoOverlay').style.display='flex'; document.getElementById('birthdayVideo').play(); }
 
-    // 影片與遊戲邏輯 (保留你之前的設定)
-    function playVideo() { document.getElementById('videoOverlay').style.display = 'flex'; document.getElementById('birthdayVideo').play(); }
-    function closeVideo() { document.getElementById('birthdayVideo').pause(); document.getElementById('videoOverlay').style.display = 'none'; }
-    // ... 遊戲部分的 JavaScript 代碼請保留你原本的內容 ...
+    // --- 遊戲邏輯  ---
+    const canvas = document.getElementById('gameCanvas');
+    const ctx = canvas.getContext('2d');
+    const charImg = new Image(); charImg.src = 'character.png'; // 妳的去背照片
+
+    let score = 0, timeLeft = 30, gameActive = false, playerX = 125, cakes = [];
+    let moveLeft = false, moveRight = false;
+
+    function initGame() {
+        document.getElementById('startBtn').style.display = 'none';
+        document.getElementById('gameHint').style.display = 'none';
+        document.getElementById('gameWrapper').style.display = 'flex';
+        gameActive = true; runGame();
+        const timerInt = setInterval(() => {
+            timeLeft--; document.getElementById('timer').innerText = timeLeft;
+            if(timeLeft <= 0) { clearInterval(timerInt); gameActive = false; endGame(); }
+        }, 1000);
+    }
+
+    // 按鍵控制 
+    document.getElementById('leftBtn').ontouchstart = () => moveLeft = true;
+    document.getElementById('leftBtn').ontouchend = () => moveLeft = false;
+    document.getElementById('rightBtn').ontouchstart = () => moveRight = true;
+    document.getElementById('rightBtn').ontouchend = () => moveRight = false;
+
+    function runGame() {
+        if(!gameActive) return;
+        ctx.clearRect(0,0,300,350);
+        
+        // 移動邏輯
+        if(moveLeft && playerX > 0) playerX -= 5;
+        if(moveRight && playerX < 250) playerX += 5;
+
+        // 畫去背角色
+        ctx.drawImage(charImg, playerX, 280, 50, 65);
+
+        // 蛋糕掉落
+        if(Math.random() < 0.04) cakes.push({x: Math.random()*270, y: 0});
+        cakes.forEach((c, i) => {
+            c.y += 4; ctx.font = "30px Arial"; ctx.fillText("🍰", c.x, c.y);
+            // 碰撞檢測 (接到一個5分) 
+            if(c.y > 280 && c.y < 340 && c.x > playerX - 20 && c.x < playerX + 40) {
+                score += 5; document.getElementById('score').innerText = score; cakes.splice(i, 1);
+            }
+        });
+        requestAnimationFrame(runGame);
+    }
+
+    function endGame() {
+        document.getElementById('finalScore').innerText = score;
+        setTimeout(() => swiper.slideTo(6), 1000); // 跳到結算頁 
+    }
 </script>
 </body>
 </html>
