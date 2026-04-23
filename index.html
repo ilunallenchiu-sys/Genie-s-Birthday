@@ -7,64 +7,46 @@
     <link href="https://fonts.googleapis.com/css2?family=Klee+One:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
     <style>
-        :root { --text-color: #5d4037; --accent-color: #d84315; }
+        :root { --text-color: #5d4037; --accent: #d84315; }
         body, html { margin: 0; padding: 0; height: 100%; font-family: 'Klee One', cursive; background: #8d6e63; overflow: hidden; }
         
-        /* 木質調背景 */
+        /* 木質調背景  */
         .swiper { width: 100%; height: 100%; background: #e0c9a6 url('https://www.transparenttextures.com/patterns/wood-pattern.png'); }
         .swiper-slide { display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 20px; box-sizing: border-box; }
 
-        .content-card { background: rgba(255, 255, 255, 0.85); padding: 20px; border-radius: 20px; border: 2px solid #5d4037; width: 85%; max-width: 380px; min-height: 480px; box-shadow: 0 10px 20px rgba(0,0,0,0.1); display: flex; flex-direction: column; justify-content: center; align-items: center; }
+        .content-card { background: rgba(255, 255, 255, 0.85); padding: 20px; border-radius: 20px; border: 2px solid #5d4037; width: 85%; max-width: 380px; min-height: 480px; box-shadow: 0 10px 20px rgba(0,0,0,0.1); position: relative; }
         .photo-box { width: 100%; aspect-ratio: 4/5; background: #fff; margin-bottom: 10px; border-radius: 10px; overflow: hidden; border: 1px solid #ddd; position: relative; }
         .photo-box img { width: 100%; height: 100%; object-fit: cover; }
         
-        /* 手寫打字機效果 */
-        .typewriter-text { font-size: 18px; line-height: 1.6; text-align: left; width: 100%; min-height: 80px; white-space: pre-wrap; color: var(--text-color); }
+        .typewriter-text { font-size: 17px; line-height: 1.6; text-align: left; width: 100%; min-height: 80px; white-space: pre-wrap; color: var(--text-color); }
 
-        /* 自定義裝飾彈窗 (Modal) */
-        #modalOverlay { 
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
-            background: rgba(0,0,0,0.5); display: none; z-index: 2000; 
-            justify-content: center; align-items: center; 
-        }
-        .custom-modal { 
-            background: #fffef9; width: 80%; max-width: 300px; 
-            padding: 30px; border-radius: 10px; position: relative;
-            box-shadow: 0 0 0 5px #fffef9, 0 0 0 8px #5d4037; /* 雙層邊框 */
-            text-align: center; color: var(--text-color);
-        }
-        /* 花邊裝飾角 */
-        .custom-modal::before, .custom-modal::after {
-            content: "✿"; position: absolute; font-size: 24px; color: #5d4037;
-        }
-        .custom-modal::before { top: 5px; left: 5px; }
-        .custom-modal::after { bottom: 5px; right: 5px; }
+        /* 財報遊戲樣式  */
+        .report-table { background: #fff; border: 1px solid #333; width: 100%; font-family: 'Arial', sans-serif; font-size: 13px; color: #333; text-align: left; border-collapse: collapse; margin-top: 10px; }
+        .report-table th, .report-table td { border: 1px solid #ccc; padding: 8px; }
+        .report-table th { background: #f2f2f2; }
+        .error-spot { cursor: pointer; position: relative; font-weight: bold; }
+        .error-spot.found { color: var(--accent); text-decoration: line-through; }
+        .error-spot.found::after { content: '❌'; position: absolute; left: -15px; color: red; }
         
-        .modal-btn { 
-            margin-top: 20px; padding: 8px 25px; background: #5d4037; 
-            color: white; border: none; border-radius: 20px; font-family: 'Klee One';
-        }
+        /* 裝飾彈窗 [cite: 22] */
+        #modalOverlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); display: none; z-index: 2000; justify-content: center; align-items: center; }
+        .custom-modal { background: #fffef9; width: 80%; max-width: 300px; padding: 25px; border-radius: 10px; border: 3px double #5d4037; text-align: center; }
 
-        /* 遊戲區域 */
-        #gameWrapper { display: none; width: 100%; flex-direction: column; align-items: center; }
-        #gameCanvas { background: rgba(255,255,255,0.4); border: 2px solid #5d4037; border-radius: 10px; touch-action: none; width: 300px; height: 350px; }
-        .game-controls { display: flex; gap: 40px; margin-top: 15px; }
-        .ctrl-btn { width: 60px; height: 60px; background: #5d4037; color: white; border: none; border-radius: 50%; font-size: 24px; }
-
-        /* 影片 */
+        /* 影片彈窗  */
         #videoOverlay { position: fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.9); display:none; z-index:1000; justify-content:center; align-items:center; }
         video { width: 90%; border-radius: 10px; }
         
-        h1 { font-size: 24px; margin: 5px 0; }
-        .hint { font-size: 12px; opacity: 0.6; margin-top: 10px; }
+        h1 { font-size: 22px; margin: 5px 0; }
+        .hint { font-size: 11px; opacity: 0.6; margin-top: 10px; }
+        .counter { font-weight: bold; color: var(--accent); margin-top: 10px; }
     </style>
 </head>
 <body>
 
 <div id="modalOverlay">
     <div class="custom-modal">
-        <p id="modalMessage">正在加載...</p>
-        <button class="modal-btn" onclick="closeStyledModal()">確定</button>
+        <p id="modalMessage">正在掃描...</p>
+        <button onclick="closeStyledModal()" style="margin-top:15px; padding:5px 20px; background:#5d4037; color:white; border:none; border-radius:15px;">好的</button>
     </div>
 </div>
 
@@ -74,49 +56,52 @@
             <div class="content-card">
                 <h1>HAPPY BIRTHDAY</h1>
                 <h1>TO GENIE</h1>
-                <p style="font-weight:bold;">Apr. 24, 2026</p>
+                <p>Apr. 24, 2026</p>
                 <div class="photo-box"><img src="p1.jpg"></div>
-                <p class="hint">(點擊或向右滑動翻閱)</p>
+                <p class="hint">(向右滑動翻閱內容 [cite: 5])</p>
             </div>
         </div>
 
         <div class="swiper-slide">
             <div class="content-card">
                 <div class="photo-box"><img src="p2.jpg"></div>
-                <div class="typewriter-text" data-text="Genie，生日快樂！\n這是我為妳準備的小世界。\n每一張照片都是我們的回憶。"></div>
+                <div class="typewriter-text" data-text="Genie，身為未來的 TSMC 工程師，\n這一年我對妳的關心比產能還滿。\n請翻開下一頁，幫我的年度財報除錯。"></div>
             </div>
         </div>
 
         <div class="swiper-slide">
             <div class="content-card">
-                <div class="photo-box" onclick="playVideo()">
+                <h1>📊 年度感情財務報表</h1>
+                <p style="font-size: 13px;">請點擊修正 3 處顯著的數據錯誤：</p>
+                
+                <table class="report-table">
+                    <tr><th>項目</th><th>數據</th></tr>
+                    <tr><td>幸福指數 (Happiness)</td><td class="error-spot" onclick="findError(this, '幸福怎麼可能只有 90%？應修正為 10000%！')">90%</td></tr>
+                    <tr><td>年度擁抱次數 (Hugs)</td><td class="error-spot" onclick="findError(this, '太少了！這數值應該是無限大。')">12 次</td></tr>
+                    <tr><td>鑽石生長品質 (Diamond)</td><td>Grade A</td></tr>
+                    <tr><td>對妳的耐心 (Patience)</td><td class="error-spot" onclick="findError(this, '系統偵測：這數值被低估了，必須重新計算。')">不足</td></tr>
+                </table>
+                
+                <div class="counter">已修正：<span id="foundCount">0</span> / 3</div>
+                <p id="unlockHint" style="font-size: 12px; color: green; display: none; margin-top:10px;">✅ 審核通過！影片已解鎖，請往右滑。</p>
+            </div>
+        </div>
+
+        <div class="swiper-slide">
+            <div class="content-card">
+                <h1 id="vTitle">🔒 影片未解鎖</h1>
+                <div class="photo-box" id="vBox" style="filter: blur(10px); pointer-events: none;" onclick="playVideo()">
                     <img src="p5.jpg">
                     <div style="position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); font-size:60px; color:white;">▶️</div>
                 </div>
-                <div class="typewriter-text" data-text="點擊照片觀看影片"></div>
+                <p id="vDesc">請先完成上一頁的財報審查。</p>
             </div>
         </div>
 
         <div class="swiper-slide">
             <div class="content-card">
-                <h1>🍰 接蛋糕挑戰</h1>
-                <div id="gameWrapper">
-                    <div style="margin-bottom:10px;">剩餘: <span id="timer">30</span>s | 分數: <span id="score">0</span></div>
-                    <canvas id="gameCanvas" width="300" height="350"></canvas>
-                    <div class="game-controls">
-                        <button class="ctrl-btn" id="leftBtn">◀</button>
-                        <button class="ctrl-btn" id="rightBtn">▶</button>
-                    </div>
-                </div>
-                <button id="startBtn" onclick="initGame()" style="padding:15px 30px; font-size:20px; background:#5d4037; color:white; border:none; border-radius:50px; cursor:pointer;">開始遊戲</button>
-            </div>
-        </div>
-
-        <div class="swiper-slide">
-            <div class="content-card">
-                <h1>遊戲結果</h1>
-                <p style="font-size:40px; margin:20px 0;">得分：<span id="finalScore">0</span></p>
-                <div class="typewriter-text" data-text="妳太厲害了！\n這是我見過最強的接蛋糕大師。"></div>
+                <div class="photo-box"><img src="p6.jpg"></div>
+                <div class="typewriter-text" data-text="恭喜除錯成功！\n妳是這世界上最棒的檢察官。\n生日快樂，我的最愛！❤️"></div>
             </div>
         </div>
     </div>
@@ -128,105 +113,56 @@
 
 <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 <script>
-    // --- 彈窗邏輯 ---
-    let modalQueue = [];
-    let currentCallback = null;
-
-    function showStyledModal(message, callback) {
-        modalQueue.push({ message, callback });
-        if (document.getElementById('modalOverlay').style.display !== 'flex') {
-            processQueue();
-        }
-    }
-
-    function processQueue() {
-        if (modalQueue.length > 0) {
-            const item = modalQueue.shift();
-            document.getElementById('modalMessage').innerText = item.message;
-            currentCallback = item.callback;
-            document.getElementById('modalOverlay').style.display = 'flex';
-        }
-    }
-
-    function closeStyledModal() {
-        document.getElementById('modalOverlay').style.display = 'none';
-        if (currentCallback) currentCallback();
-        if (modalQueue.length > 0) setTimeout(processQueue, 300);
-    }
-
-    // --- 初始化翻頁 ---
+    // --- 基礎設定 ---
     const swiper = new Swiper('.swiper', { 
         on: { slideChangeTransitionEnd: function() { startTyping(this.activeIndex); } } 
     });
 
+    // 彈窗邏輯 [cite: 22]
+    function showStyledModal(msg) {
+        document.getElementById('modalMessage').innerText = msg;
+        document.getElementById('modalOverlay').style.display = 'flex';
+    }
+    function closeStyledModal() { document.getElementById('modalOverlay').style.display = 'none'; }
+
+    // 打字機邏輯 
     function startTyping(index) {
         const slide = document.querySelectorAll('.swiper-slide')[index];
         const el = slide.querySelector('.typewriter-text');
         if (el && !el.dataset.done) {
             const str = el.dataset.text.replace(/\\n/g, '\n');
             let i = 0; el.innerHTML = ""; el.dataset.done = "true";
-            function type() { if (i < str.length) { el.innerHTML += str[i++]; setTimeout(type, 80); } }
+            function type() { if (i < str.length) { el.innerHTML += str[i++]; setTimeout(type, 100); } }
             type();
         }
     }
+    window.onload = () => { showStyledModal("⚠️ 發現異常財務活動：Genie 的生日報表需要審核！"); startTyping(0); };
 
-    // --- 進入網頁的連環彈窗 ---
-    window.onload = () => {
-        showStyledModal("⚠️ 系統偵測：發現極高能量的可愛熱源！", () => {
-            showStyledModal("正在進行材料分析...", () => {
-                showStyledModal("分析結果：能量來源是 Genie！❤️", () => {
-                    startTyping(0);
-                });
-            });
-        });
-    };
+    // --- 財報遊戲邏輯  ---
+    let found = 0;
+    function findError(el, msg) {
+        if (el.classList.contains('found')) return;
+        el.classList.add('found');
+        found++;
+        document.getElementById('foundCount').innerText = found;
+        showStyledModal(msg);
 
-    function playVideo() { document.getElementById('videoOverlay').style.display='flex'; document.getElementById('birthdayVideo').play(); }
-
-    // --- 接蛋糕遊戲邏輯 ---
-    const canvas = document.getElementById('gameCanvas');
-    const ctx = canvas.getContext('2d');
-    const charImg = new Image(); charImg.src = 'character.png';
-
-    let score = 0, timeLeft = 30, gameActive = false, playerX = 125, cakes = [];
-    let moveLeft = false, moveRight = false;
-
-    function initGame() {
-        document.getElementById('startBtn').style.display = 'none';
-        document.getElementById('gameWrapper').style.display = 'flex';
-        gameActive = true; runGame();
-        const timerInt = setInterval(() => {
-            timeLeft--; document.getElementById('timer').innerText = timeLeft;
-            if(timeLeft <= 0) { clearInterval(timerInt); gameActive = false; endGame(); }
-        }, 1000);
+        if (found === 3) {
+            document.getElementById('unlockHint').style.display = 'block';
+            unlockVideo();
+        }
     }
 
-    document.getElementById('leftBtn').ontouchstart = () => moveLeft = true;
-    document.getElementById('leftBtn').ontouchend = () => moveLeft = false;
-    document.getElementById('rightBtn').ontouchstart = () => moveRight = true;
-    document.getElementById('rightBtn').ontouchend = () => moveRight = false;
-
-    function runGame() {
-        if(!gameActive) return;
-        ctx.clearRect(0,0,300,350);
-        if(moveLeft && playerX > 0) playerX -= 5;
-        if(moveRight && playerX < 250) playerX += 5;
-        ctx.drawImage(charImg, playerX, 280, 50, 65);
-        if(Math.random() < 0.04) cakes.push({x: Math.random()*270, y: 0});
-        cakes.forEach((c, i) => {
-            c.y += 4; ctx.font = "30px Arial"; ctx.fillText("🍰", c.x, c.y);
-            if(c.y > 280 && c.y < 340 && c.x > playerX - 20 && c.x < playerX + 40) {
-                score += 5; document.getElementById('score').innerText = score; cakes.splice(i, 1);
-            }
-        });
-        requestAnimationFrame(runGame);
+    function unlockVideo() {
+        document.getElementById('vTitle').innerText = "🔓 驚喜影片已解鎖";
+        document.getElementById('vBox').style.filter = "none";
+        document.getElementById('vBox').style.pointer-events = "auto";
+        document.getElementById('vDesc').innerText = "點擊上方照片開始播放！";
     }
 
-    function endGame() {
-        document.getElementById('finalScore').innerText = score;
-        showStyledModal("挑戰結束！看看妳得到了幾分？", () => {
-            swiper.slideTo(5);
-        });
+    function playVideo() { 
+        document.getElementById('videoOverlay').style.display = 'flex'; 
+        document.getElementById('birthdayVideo').play(); 
     }
 </script>
 </body>
