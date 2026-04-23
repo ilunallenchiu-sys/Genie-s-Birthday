@@ -105,13 +105,15 @@
 
 <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 <script>
-// 1. 初始化 Swiper
+// 1. 初始化 Swiper (增加滑動靈敏度)
     var swiperInstance = new Swiper('.swiper', {
         loop: false,
+        speed: 600,
         observer: true,
         observeParents: true,
+        allowTouchMove: true, // 確保觸控滑動開啟
         on: { 
-            slideChangeTransitionEnd: function() { 
+            slideChange: function() { 
                 startTyping(this.activeIndex); 
             } 
         }
@@ -119,8 +121,11 @@
 
     // 2. 彈窗邏輯
     function showStyledModal(msg) {
-        document.getElementById('modalMessage').textContent = msg;
-        document.getElementById('modalOverlay').style.display = 'flex';
+        var modal = document.getElementById('modalMessage');
+        if (modal) {
+            modal.textContent = msg;
+            document.getElementById('modalOverlay').style.display = 'flex';
+        }
     }
 
     function closeStyledModal() {
@@ -151,10 +156,11 @@
     window.onload = function() {
         showStyledModal("發現異常財務活動：Genie 的生日報表需要審核！");
         startTyping(0);
+        // 延遲更新 Swiper 確保寬度計算正確
         setTimeout(function() { swiperInstance.update(); }, 500);
     };
 
-    // 5. 財報除錯遊戲核心邏輯 (修正缺失的括號)
+    // 5. 財報除錯遊戲核心邏輯 (括號已補齊)
     var foundNum = 0;
     function findErr(el, msg) {
         if (el.classList.contains('found')) return;
@@ -169,10 +175,13 @@
             document.getElementById('vBox').style.pointerEvents = "auto"; 
             document.getElementById('vDesc').textContent = "點擊照片開始播放！";
         }
-    } // <--- 就是這行！補上這張「封裝蓋子」，函式才算結束
+    } // <--- 修正點：這是關閉 findErr 函式的括號
 
     // 6. 影片播放邏輯
     function playVideo() {
-        document.getElementById('videoOverlay').style.display = 'flex';
-        document.getElementById('birthdayVideo').play();
+        var video = document.getElementById('birthdayVideo');
+        if (video) {
+            document.getElementById('videoOverlay').style.display = 'flex';
+            video.play();
+        }
     }
