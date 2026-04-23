@@ -58,7 +58,7 @@
         <div class="swiper-slide">
             <div class="content-card">
                 <div class="photo-box"><img src="3.jpg"></div>
-                <div class="typewriter-text" data-text="妳的存在就像材料研究中的完美參數，\n讓我的世界穩定而幸福。"></div>
+                <div class="typewriter-text" data-text="妳的存在就像完美參數，\n讓我的世界穩定而幸福。"></div>
             </div>
         </div>
         <div class="swiper-slide">
@@ -89,13 +89,13 @@
         <div class="swiper-slide">
             <div class="content-card">
                 <div class="photo-box"><img src="6.jpg"></div>
-                <div class="typewriter-text" data-text="恭喜除錯成功！\n妳是這世界上最棒的檢察官。\n生日快樂，我的最愛！❤️"></div>
+                <div class="typewriter-text" data-text="恭喜除錯成功！\n妳是這世界上最棒的檢察官。"></div>
             </div>
         </div>
         <div class="swiper-slide">
             <div class="content-card">
                 <div class="photo-box"><img src="7.jpg"></div>
-                <div class="typewriter-text" data-text="願我們在未來的日子裡，\n像鑽石一樣閃耀且堅不可摧。\nAlles Gute zum Geburtstag! 🎂"></div>
+                <div class="typewriter-text" data-text="Happy Birthday! 🎂\nAlles Gute zum Geburtstag! ❤️"></div>
             </div>
         </div>
     </div>
@@ -107,7 +107,6 @@
 
 <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 <script>
-    // 初始化 Swiper
     var mainSwiper = new Swiper('.swiper', {
         loop: false,
         observer: true,
@@ -123,15 +122,12 @@
         document.getElementById('modalMessage').innerText = msg;
         document.getElementById('modalOverlay').style.display = 'flex';
     }
-
-    function closeStyledModal() {
-        document.getElementById('modalOverlay').style.display = 'none';
-    }
+    function closeStyledModal() { document.getElementById('modalOverlay').style.display = 'none'; }
 
     function startTyping(index) {
-        var slide = document.querySelectorAll('.swiper-slide')[index];
-        if (!slide) return;
-        var el = slide.querySelector('.typewriter-text');
+        var slides = document.querySelectorAll('.swiper-slide');
+        if (!slides[index]) return;
+        var el = slides[index].querySelector('.typewriter-text');
         if (el && !el.dataset.done) {
             var str = el.dataset.text.replace(/\\n/g, '\n');
             var i = 0;
@@ -139,8 +135,7 @@
             el.dataset.done = "true";
             function type() {
                 if (i < str.length) {
-                    el.innerHTML += str.charAt(i);
-                    i++;
+                    el.innerHTML += str.charAt(i++);
                     setTimeout(type, 100);
                 }
             }
