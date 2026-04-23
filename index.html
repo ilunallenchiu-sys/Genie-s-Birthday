@@ -105,13 +105,19 @@
 
 <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 <script>
+// 1. 初始化 Swiper
     var swiperInstance = new Swiper('.swiper', {
         loop: false,
         observer: true,
         observeParents: true,
-        on: { slideChangeTransitionEnd: function() { startTyping(this.activeIndex); } }
+        on: { 
+            slideChangeTransitionEnd: function() { 
+                startTyping(this.activeIndex); 
+            } 
+        }
     });
 
+    // 2. 彈窗邏輯
     function showStyledModal(msg) {
         document.getElementById('modalMessage').textContent = msg;
         document.getElementById('modalOverlay').style.display = 'flex';
@@ -121,6 +127,7 @@
         document.getElementById('modalOverlay').style.display = 'none';
     }
 
+    // 3. 手寫打字機邏輯
     function startTyping(idx) {
         var slides = document.querySelectorAll('.swiper-slide');
         if (!slides[idx]) return;
@@ -140,5 +147,32 @@
         }
     }
 
+    // 4. 頁面載入初始化
     window.onload = function() {
-        showStyledModal("發現異常財務活動：Genie 的生日報表需要
+        showStyledModal("發現異常財務活動：Genie 的生日報表需要審核！");
+        startTyping(0);
+        setTimeout(function() { swiperInstance.update(); }, 500);
+    };
+
+    // 5. 財報除錯遊戲核心邏輯 (修正缺失的括號)
+    var foundNum = 0;
+    function findErr(el, msg) {
+        if (el.classList.contains('found')) return;
+        el.classList.add('found');
+        foundNum = foundNum + 1;
+        showStyledModal(msg);
+        
+        if (foundNum === 3) {
+            document.getElementById('unlockHint').style.display = 'block';
+            document.getElementById('vTitle').textContent = "🔓 影片已解鎖";
+            document.getElementById('vBox').style.filter = "none";
+            document.getElementById('vBox').style.pointerEvents = "auto"; 
+            document.getElementById('vDesc').textContent = "點擊照片開始播放！";
+        }
+    } // <--- 就是這行！補上這張「封裝蓋子」，函式才算結束
+
+    // 6. 影片播放邏輯
+    function playVideo() {
+        document.getElementById('videoOverlay').style.display = 'flex';
+        document.getElementById('birthdayVideo').play();
+    }
