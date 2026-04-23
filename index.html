@@ -33,7 +33,7 @@
 <div id="modalOverlay">
     <div class="custom-modal">
         <p id="modalMessage">正在掃描...</p>
-        <button onclick="closeStyledModal()" style="margin-top:15px; padding:5px 20px; background:#5d4037; color:white; border:none; border-radius:15px;">好的</button>
+        <button onclick="closeStyledModal()" style="margin-top:15px; padding:5px 20px; background:#5d4037; color:white; border:none; border-radius:15px; font-family: 'Klee One';">好的</button>
     </div>
 </div>
 
@@ -105,6 +105,7 @@
 
 <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 <script>
+    // 初始化 Swiper
     var swiperInstance = new Swiper('.swiper', {
         loop: false,
         observer: true,
@@ -156,6 +157,7 @@
             document.getElementById('unlockHint').style.display = 'block';
             document.getElementById('vTitle').textContent = "影片已解鎖";
             document.getElementById('vBox').style.filter = "none";
+            // 修正點：使用 camelCase 避免 SyntaxError
             document.getElementById('vBox').style.pointerEvents = "auto";
             document.getElementById('vDesc').textContent = "點擊照片開始播放！";
         }
