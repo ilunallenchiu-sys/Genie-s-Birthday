@@ -120,7 +120,7 @@
 </div>
 
 <div id="videoOverlay" onclick="this.style.display='none'">
-    <video id="birthdayVideo" controls src="v1.mp4"></video>
+    <video id="birthdayVideo" controls src="v1.mp4" playsinline webkit-playsinline></video>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
@@ -185,9 +185,25 @@
 
     // 5. 影片與載入初始化
     function playVideo() {
-        document.getElementById('videoOverlay').style.display = 'flex';
-        document.getElementById('birthdayVideo').play();
+    var video = document.getElementById('birthdayVideo');
+    var overlay = document.getElementById('videoOverlay');
+    
+    if (video) {
+        overlay.style.display = 'flex';
+        video.load(); // 強制重新載入資源
+        
+        // 嘗試播放，並處理可能的拒絕
+        var playPromise = video.play();
+        if (playPromise !== undefined) {
+            playPromise.then(_ => {
+                // 自動播放成功
+            }).catch(error => {
+                // 如果被攔截，顯示控制條讓使用者手動點擊
+                console.log("播放被攔截，請點擊螢幕播放");
+            });
+        }
     }
+}
 
     window.onload = function() {
         showStyledModal("發現異常財務活動：Genie 的生日報表需要審核！");
