@@ -10,29 +10,53 @@
         :root { --text-color: #5d4037; --accent: #d84315; }
         body, html { margin: 0; padding: 0; height: 100%; font-family: 'Klee One', cursive; background: #8d6e63; overflow: hidden; }
         
-        /* 木質調背景  */
-        .swiper { width: 100%; height: 100%; background: #e0c9a6 url('https://www.transparenttextures.com/patterns/wood-pattern.png'); }
-        .swiper-slide { display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 20px; box-sizing: border-box; }
+        /* 確保 swiper 佔滿全螢幕且可以被滑動 */
+        .swiper { 
+            width: 100%; 
+            height: 100vh; 
+            background: #e0c9a6 url('https://www.transparenttextures.com/patterns/wood-pattern.png'); 
+        }
+        
+        .swiper-slide { 
+            display: flex; 
+            flex-direction: column; 
+            justify-content: center; 
+            align-items: center; 
+            text-align: center; 
+            padding: 20px; 
+            box-sizing: border-box; 
+        }
 
-        .content-card { background: rgba(255, 255, 255, 0.85); padding: 20px; border-radius: 20px; border: 2px solid #5d4037; width: 85%; max-width: 380px; min-height: 480px; box-shadow: 0 10px 20px rgba(0,0,0,0.1); position: relative; }
+        .content-card { 
+            background: rgba(255, 255, 255, 0.85); 
+            padding: 20px; 
+            border-radius: 20px; 
+            border: 2px solid #5d4037; 
+            width: 85%; 
+            max-width: 380px; 
+            min-height: 480px; 
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1); 
+            position: relative;
+            /* 關鍵：允許垂直滾動但保留水平滑動權限給 Swiper */
+            touch-action: pan-y; 
+        }
+
         .photo-box { width: 100%; aspect-ratio: 4/5; background: #fff; margin-bottom: 10px; border-radius: 10px; overflow: hidden; border: 1px solid #ddd; position: relative; }
         .photo-box img { width: 100%; height: 100%; object-fit: cover; }
-        
         .typewriter-text { font-size: 17px; line-height: 1.6; text-align: left; width: 100%; min-height: 80px; white-space: pre-wrap; color: var(--text-color); }
 
-        /* 財報遊戲樣式  */
+        /* 財報遊戲樣式 */
         .report-table { background: #fff; border: 1px solid #333; width: 100%; font-family: 'Arial', sans-serif; font-size: 13px; color: #333; text-align: left; border-collapse: collapse; margin-top: 10px; }
         .report-table th, .report-table td { border: 1px solid #ccc; padding: 8px; }
-        .report-table th { background: #f2f2f2; }
         .error-spot { cursor: pointer; position: relative; font-weight: bold; }
         .error-spot.found { color: var(--accent); text-decoration: line-through; }
         .error-spot.found::after { content: '❌'; position: absolute; left: -15px; color: red; }
         
-        /* 裝飾彈窗 [cite: 22] */
+        /* 裝飾彈窗  */
         #modalOverlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); display: none; z-index: 2000; justify-content: center; align-items: center; }
         .custom-modal { background: #fffef9; width: 80%; max-width: 300px; padding: 25px; border-radius: 10px; border: 3px double #5d4037; text-align: center; }
 
-        /* 影片彈窗  */
+        /* 影片彈窗 */
         #videoOverlay { position: fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.9); display:none; z-index:1000; justify-content:center; align-items:center; }
         video { width: 90%; border-radius: 10px; }
         
@@ -58,14 +82,14 @@
                 <h1>TO GENIE</h1>
                 <p>Apr. 24, 2026</p>
                 <div class="photo-box"><img src="p1.jpg"></div>
-                <p class="hint">(向右滑動翻閱內容 [cite: 5])</p>
+                <p class="hint">(向右滑動翻閱內容)</p>
             </div>
         </div>
 
         <div class="swiper-slide">
             <div class="content-card">
                 <div class="photo-box"><img src="p2.jpg"></div>
-                <div class="typewriter-text" data-text="Genie，，\n這一年我對妳的關心比產能還滿。\n請翻開下一頁，幫我的年度財報除錯。"></div>
+                <div class="typewriter-text" data-text="Genie，\n這一年我對妳的關心比產能還滿。\n請翻開下一頁，幫我的年度財報除錯。"></div>
             </div>
         </div>
 
@@ -73,15 +97,12 @@
             <div class="content-card">
                 <h1>📊 年度感情財務報表</h1>
                 <p style="font-size: 13px;">請點擊修正 3 處顯著的數據錯誤：</p>
-                
                 <table class="report-table">
                     <tr><th>項目</th><th>數據</th></tr>
-                    <tr><td>幸福指數 (Happiness)</td><td class="error-spot" onclick="findError(this, '幸福怎麼可能只有 90%？應修正為 10000%！')">90%</td></tr>
-                    <tr><td>年度擁抱次數 (Hugs)</td><td class="error-spot" onclick="findError(this, '太少了！這數值應該是無限大。')">12 次</td></tr>
-                    <tr><td>鑽石生長品質 (Diamond)</td><td>Grade A</td></tr>
-                    <tr><td>對妳的耐心 (Patience)</td><td class="error-spot" onclick="findError(this, '系統偵測：這數值被低估了，必須重新計算。')">不足</td></tr>
+                    <tr><td>幸福指數</td><td class="error-spot" onclick="findError(this, '幸福怎麼可能只有 90%？應修正為 10000%！')">90%</td></tr>
+                    <tr><td>年度擁抱</td><td class="error-spot" onclick="findError(this, '太少了！這數值應該是無限大。')">12 次</td></tr>
+                    <tr><td>耐心指數</td><td class="error-spot" onclick="findError(this, '系統偵測：這數值被低估了，必須重新計算。')">不足</td></tr>
                 </table>
-                
                 <div class="counter">已修正：<span id="foundCount">0</span> / 3</div>
                 <p id="unlockHint" style="font-size: 12px; color: green; display: none; margin-top:10px;">✅ 審核通過！影片已解鎖，請往右滑。</p>
             </div>
@@ -113,19 +134,28 @@
 
 <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 <script>
-    // --- 基礎設定 ---
-    const swiper = new Swiper('.swiper', { 
-        on: { slideChangeTransitionEnd: function() { startTyping(this.activeIndex); } } 
+    // --- 強壯版 Swiper 初始化 ---
+    const swiper = new Swiper('.swiper', {
+        loop: false,
+        speed: 600,
+        observer: true,           // 關鍵：DOM 變化時自動更新
+        observeParents: true,      // 關鍵：父元素變化時自動更新
+        touchStartPreventDefault: false, // 確保觸控不會被完全封死
+        on: {
+            slideChangeTransitionEnd: function() {
+                startTyping(this.activeIndex);
+            }
+        }
     });
 
-    // 彈窗邏輯 [cite: 22]
+    // 彈窗邏輯 
     function showStyledModal(msg) {
         document.getElementById('modalMessage').innerText = msg;
         document.getElementById('modalOverlay').style.display = 'flex';
     }
     function closeStyledModal() { document.getElementById('modalOverlay').style.display = 'none'; }
 
-    // 打字機邏輯 
+    // 打字機邏輯
     function startTyping(index) {
         const slide = document.querySelectorAll('.swiper-slide')[index];
         const el = slide.querySelector('.typewriter-text');
@@ -136,9 +166,15 @@
             type();
         }
     }
-    window.onload = () => { showStyledModal("⚠️ 發現異常財務活動：Genie 的生日報表需要審核！"); startTyping(0); };
 
-    // --- 財報遊戲邏輯  ---
+    // 當所有資源載入後再觸發初始動畫，並強制 Swiper 更新
+    window.onload = () => {
+        showStyledModal("⚠️ 發現異常財務活動：Genie 的生日報表需要審核！");
+        startTyping(0);
+        setTimeout(() => { swiper.update(); }, 500); // 強制更新一次寬度計算
+    };
+
+    // 財報遊戲與解鎖影片邏輯保持不變
     let found = 0;
     function findError(el, msg) {
         if (el.classList.contains('found')) return;
@@ -146,7 +182,6 @@
         found++;
         document.getElementById('foundCount').innerText = found;
         showStyledModal(msg);
-
         if (found === 3) {
             document.getElementById('unlockHint').style.display = 'block';
             unlockVideo();
@@ -154,7 +189,7 @@
     }
 
     function unlockVideo() {
-        document.getElementById('vTitle').innerText = "🔓 驚喜影片已解鎖";
+        document.getElementById('vTitle').innerText = "維度異常修正：🔓 影片已解鎖";
         document.getElementById('vBox').style.filter = "none";
         document.getElementById('vBox').style.pointer-events = "auto";
         document.getElementById('vDesc').innerText = "點擊上方照片開始播放！";
