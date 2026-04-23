@@ -7,10 +7,10 @@
     <link href="https://fonts.googleapis.com/css2?family=Klee+One:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
     <style>
-        :root { --text-color: #5d4037; }
+        :root { --text-color: #5d4037; --accent-color: #d84315; }
         body, html { margin: 0; padding: 0; height: 100%; font-family: 'Klee One', cursive; background: #8d6e63; overflow: hidden; }
         
-        /* 木質調背景 [cite: 6, 13] */
+        /* 木質調背景 */
         .swiper { width: 100%; height: 100%; background: #e0c9a6 url('https://www.transparenttextures.com/patterns/wood-pattern.png'); }
         .swiper-slide { display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 20px; box-sizing: border-box; }
 
@@ -20,17 +20,38 @@
         
         /* 手寫打字機效果 */
         .typewriter-text { font-size: 18px; line-height: 1.6; text-align: left; width: 100%; min-height: 80px; white-space: pre-wrap; color: var(--text-color); }
-        .typewriter-text::after { content: "|"; animation: blink 0.7s infinite; }
-        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
 
-        /* 遊戲區域  */
+        /* 自定義裝飾彈窗 (Modal) */
+        #modalOverlay { 
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+            background: rgba(0,0,0,0.5); display: none; z-index: 2000; 
+            justify-content: center; align-items: center; 
+        }
+        .custom-modal { 
+            background: #fffef9; width: 80%; max-width: 300px; 
+            padding: 30px; border-radius: 10px; position: relative;
+            box-shadow: 0 0 0 5px #fffef9, 0 0 0 8px #5d4037; /* 雙層邊框 */
+            text-align: center; color: var(--text-color);
+        }
+        /* 花邊裝飾角 */
+        .custom-modal::before, .custom-modal::after {
+            content: "✿"; position: absolute; font-size: 24px; color: #5d4037;
+        }
+        .custom-modal::before { top: 5px; left: 5px; }
+        .custom-modal::after { bottom: 5px; right: 5px; }
+        
+        .modal-btn { 
+            margin-top: 20px; padding: 8px 25px; background: #5d4037; 
+            color: white; border: none; border-radius: 20px; font-family: 'Klee One';
+        }
+
+        /* 遊戲區域 */
         #gameWrapper { display: none; width: 100%; flex-direction: column; align-items: center; }
         #gameCanvas { background: rgba(255,255,255,0.4); border: 2px solid #5d4037; border-radius: 10px; touch-action: none; width: 300px; height: 350px; }
         .game-controls { display: flex; gap: 40px; margin-top: 15px; }
-        .ctrl-btn { width: 60px; height: 60px; background: #5d4037; color: white; border: none; border-radius: 50%; font-size: 24px; touch-action: manipulation; }
-        .game-info { font-size: 20px; margin-bottom: 10px; font-weight: bold; color: var(--text-color); }
+        .ctrl-btn { width: 60px; height: 60px; background: #5d4037; color: white; border: none; border-radius: 50%; font-size: 24px; }
 
-        /* 影片  */
+        /* 影片 */
         #videoOverlay { position: fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.9); display:none; z-index:1000; justify-content:center; align-items:center; }
         video { width: 90%; border-radius: 10px; }
         
@@ -40,6 +61,13 @@
 </head>
 <body>
 
+<div id="modalOverlay">
+    <div class="custom-modal">
+        <p id="modalMessage">正在加載...</p>
+        <button class="modal-btn" onclick="closeStyledModal()">確定</button>
+    </div>
+</div>
+
 <div class="swiper">
     <div class="swiper-wrapper">
         <div class="swiper-slide">
@@ -48,20 +76,14 @@
                 <h1>TO GENIE</h1>
                 <p style="font-weight:bold;">Apr. 24, 2026</p>
                 <div class="photo-box"><img src="p1.jpg"></div>
-                <p class="hint">點擊或向右滑出現下一頁 [cite: 5]</p>
+                <p class="hint">(點擊或向右滑動翻閱)</p>
             </div>
         </div>
 
         <div class="swiper-slide">
             <div class="content-card">
                 <div class="photo-box"><img src="p2.jpg"></div>
-                <div class="typewriter-text" data-text="Genie，生日快樂！\n這是我們一起度過的特別日子。\n希望這份手寫的溫度能傳遞給妳。"></div>
-            </div>
-        </div>
-        <div class="swiper-slide">
-            <div class="content-card">
-                <div class="photo-box"><img src="p3.jpg"></div>
-                <div class="typewriter-text" data-text="就像我研究的 CVD 鑽石一樣，\n我對妳的心意也是恆久不變的。"></div>
+                <div class="typewriter-text" data-text="Genie，生日快樂！\n這是我為妳準備的小世界。\n每一張照片都是我們的回憶。"></div>
             </div>
         </div>
 
@@ -71,15 +93,15 @@
                     <img src="p5.jpg">
                     <div style="position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); font-size:60px; color:white;">▶️</div>
                 </div>
-                <div class="typewriter-text" data-text="點擊照片出現驚喜影片 "></div>
+                <div class="typewriter-text" data-text="點擊照片觀看影片"></div>
             </div>
         </div>
 
         <div class="swiper-slide">
-            <div class="content-card" id="gameSlideContent">
-                <h1 id="gameTitle">🍰 接蛋糕挑戰</h1>
+            <div class="content-card">
+                <h1>🍰 接蛋糕挑戰</h1>
                 <div id="gameWrapper">
-                    <div class="game-info">剩餘: <span id="timer">30</span>s | 分數: <span id="score">0</span></div>
+                    <div style="margin-bottom:10px;">剩餘: <span id="timer">30</span>s | 分數: <span id="score">0</span></div>
                     <canvas id="gameCanvas" width="300" height="350"></canvas>
                     <div class="game-controls">
                         <button class="ctrl-btn" id="leftBtn">◀</button>
@@ -87,23 +109,14 @@
                     </div>
                 </div>
                 <button id="startBtn" onclick="initGame()" style="padding:15px 30px; font-size:20px; background:#5d4037; color:white; border:none; border-radius:50px; cursor:pointer;">開始遊戲</button>
-                <p id="gameHint" class="hint">30秒內接到最多蛋糕，一個5分 </p>
             </div>
         </div>
 
         <div class="swiper-slide">
             <div class="content-card">
-                <h1>遊戲結果 </h1>
+                <h1>遊戲結果</h1>
                 <p style="font-size:40px; margin:20px 0;">得分：<span id="finalScore">0</span></p>
                 <div class="typewriter-text" data-text="妳太厲害了！\n這是我見過最強的接蛋糕大師。"></div>
-                <p class="hint">向右滑看最後一段話</p>
-            </div>
-        </div>
-
-        <div class="swiper-slide">
-            <div class="content-card">
-                <div class="photo-box"><img src="p6.jpg"></div>
-                <div class="typewriter-text" data-text="最後，祝妳生日快樂！\n願妳在 2026 年的一切都如願以償。\nAlles Gute zum Geburtstag! ❤️"></div>
             </div>
         </div>
     </div>
@@ -115,7 +128,33 @@
 
 <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 <script>
-    // --- 基礎設定 ---
+    // --- 彈窗邏輯 ---
+    let modalQueue = [];
+    let currentCallback = null;
+
+    function showStyledModal(message, callback) {
+        modalQueue.push({ message, callback });
+        if (document.getElementById('modalOverlay').style.display !== 'flex') {
+            processQueue();
+        }
+    }
+
+    function processQueue() {
+        if (modalQueue.length > 0) {
+            const item = modalQueue.shift();
+            document.getElementById('modalMessage').innerText = item.message;
+            currentCallback = item.callback;
+            document.getElementById('modalOverlay').style.display = 'flex';
+        }
+    }
+
+    function closeStyledModal() {
+        document.getElementById('modalOverlay').style.display = 'none';
+        if (currentCallback) currentCallback();
+        if (modalQueue.length > 0) setTimeout(processQueue, 300);
+    }
+
+    // --- 初始化翻頁 ---
     const swiper = new Swiper('.swiper', { 
         on: { slideChangeTransitionEnd: function() { startTyping(this.activeIndex); } } 
     });
@@ -126,24 +165,34 @@
         if (el && !el.dataset.done) {
             const str = el.dataset.text.replace(/\\n/g, '\n');
             let i = 0; el.innerHTML = ""; el.dataset.done = "true";
-            function type() { if (i < str.length) { el.innerHTML += str[i++]; setTimeout(type, 100); } }
+            function type() { if (i < str.length) { el.innerHTML += str[i++]; setTimeout(type, 80); } }
             type();
         }
     }
-    window.onload = () => startTyping(0);
+
+    // --- 進入網頁的連環彈窗 ---
+    window.onload = () => {
+        showStyledModal("⚠️ 系統偵測：發現極高能量的可愛熱源！", () => {
+            showStyledModal("正在進行材料分析...", () => {
+                showStyledModal("分析結果：能量來源是 Genie！❤️", () => {
+                    startTyping(0);
+                });
+            });
+        });
+    };
+
     function playVideo() { document.getElementById('videoOverlay').style.display='flex'; document.getElementById('birthdayVideo').play(); }
 
-    // --- 遊戲邏輯  ---
+    // --- 接蛋糕遊戲邏輯 ---
     const canvas = document.getElementById('gameCanvas');
     const ctx = canvas.getContext('2d');
-    const charImg = new Image(); charImg.src = 'character.png'; // 妳的去背照片
+    const charImg = new Image(); charImg.src = 'character.png';
 
     let score = 0, timeLeft = 30, gameActive = false, playerX = 125, cakes = [];
     let moveLeft = false, moveRight = false;
 
     function initGame() {
         document.getElementById('startBtn').style.display = 'none';
-        document.getElementById('gameHint').style.display = 'none';
         document.getElementById('gameWrapper').style.display = 'flex';
         gameActive = true; runGame();
         const timerInt = setInterval(() => {
@@ -152,7 +201,6 @@
         }, 1000);
     }
 
-    // 按鍵控制 
     document.getElementById('leftBtn').ontouchstart = () => moveLeft = true;
     document.getElementById('leftBtn').ontouchend = () => moveLeft = false;
     document.getElementById('rightBtn').ontouchstart = () => moveRight = true;
@@ -161,19 +209,12 @@
     function runGame() {
         if(!gameActive) return;
         ctx.clearRect(0,0,300,350);
-        
-        // 移動邏輯
         if(moveLeft && playerX > 0) playerX -= 5;
         if(moveRight && playerX < 250) playerX += 5;
-
-        // 畫去背角色
         ctx.drawImage(charImg, playerX, 280, 50, 65);
-
-        // 蛋糕掉落
         if(Math.random() < 0.04) cakes.push({x: Math.random()*270, y: 0});
         cakes.forEach((c, i) => {
             c.y += 4; ctx.font = "30px Arial"; ctx.fillText("🍰", c.x, c.y);
-            // 碰撞檢測 (接到一個5分) 
             if(c.y > 280 && c.y < 340 && c.x > playerX - 20 && c.x < playerX + 40) {
                 score += 5; document.getElementById('score').innerText = score; cakes.splice(i, 1);
             }
@@ -183,7 +224,9 @@
 
     function endGame() {
         document.getElementById('finalScore').innerText = score;
-        setTimeout(() => swiper.slideTo(6), 1000); // 跳到結算頁 
+        showStyledModal("挑戰結束！看看妳得到了幾分？", () => {
+            swiper.slideTo(5);
+        });
     }
 </script>
 </body>
