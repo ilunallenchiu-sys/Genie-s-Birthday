@@ -34,7 +34,7 @@
 <div id="modalOverlay">
     <div class="custom-modal">
         <p id="modalMessage">正在掃描...</p>
-        <button onclick="closeStyledModal()" style="margin-top:15px; padding:5px 20px; background:#5d4037; color:white; border:none; border-radius:15px;">好的</button>
+        <button onclick="closeStyledModal()" style="margin-top:15px; padding:5px 20px; background:#5d4037; color:white; border:none; border-radius:15px; font-family: 'Klee One';">好的</button>
     </div>
 </div>
 
@@ -49,24 +49,22 @@
                 <p class="hint">(向右滑動翻閱內容)</p>
             </div>
         </div>
-
         <div class="swiper-slide">
             <div class="content-card">
                 <div class="photo-box"><img src="2.jpg"></div>
-                <div class="typewriter-text" data-text="Genie，\n這一年我對妳的關心比產能還滿。\n請翻開下一頁，幫我的年度財報除錯。"></div>
+                <div class="typewriter-text" data-text="Genie，生日快樂！\n這是我為妳準備的小驚喜。\n請翻開下一頁，幫我的年度財報除錯。"></div>
             </div>
         </div>
-
         <div class="swiper-slide">
             <div class="content-card">
                 <div class="photo-box"><img src="3.jpg"></div>
                 <div class="typewriter-text" data-text="妳的存在就像材料研究中的完美參數，\n讓我的世界穩定而幸福。"></div>
             </div>
         </div>
-
         <div class="swiper-slide">
             <div class="content-card">
                 <h1>📊 年度感情財務報表</h1>
+                <div class="photo-box" style="height: 100px;"><img src="4.jpg" style="object-fit: contain;"></div>
                 <p style="font-size: 13px;">請點擊修正 3 處數據錯誤：</p>
                 <table class="report-table">
                     <tr><th>項目</th><th>數據</th></tr>
@@ -78,7 +76,6 @@
                 <p id="unlockHint" style="font-size: 12px; color: green; display: none; margin-top:10px;">✅ 審核通過！影片已解鎖，請往右滑。</p>
             </div>
         </div>
-
         <div class="swiper-slide">
             <div class="content-card">
                 <h1 id="vTitle">🔒 影片未解鎖</h1>
@@ -89,18 +86,16 @@
                 <p id="vDesc">請先完成上一頁的財報審查。</p>
             </div>
         </div>
-
         <div class="swiper-slide">
             <div class="content-card">
                 <div class="photo-box"><img src="6.jpg"></div>
                 <div class="typewriter-text" data-text="恭喜除錯成功！\n妳是這世界上最棒的檢察官。\n生日快樂，我的最愛！❤️"></div>
             </div>
         </div>
-
         <div class="swiper-slide">
             <div class="content-card">
                 <div class="photo-box"><img src="7.jpg"></div>
-                <div class="typewriter-text" data-text="願我們在未來的日子裡，\n像鑽石一樣閃耀且堅不可摧。\nHappy Birthday! 🎂"></div>
+                <div class="typewriter-text" data-text="願我們在未來的日子裡，\n像鑽石一樣閃耀且堅不可摧。\nAlles Gute zum Geburtstag! 🎂"></div>
             </div>
         </div>
     </div>
@@ -113,7 +108,7 @@
 <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 <script>
     // 初始化 Swiper
-    const swiper = new Swiper('.swiper', {
+    var mainSwiper = new Swiper('.swiper', {
         loop: false,
         observer: true,
         observeParents: true,
@@ -134,12 +129,12 @@
     }
 
     function startTyping(index) {
-        const slide = document.querySelectorAll('.swiper-slide')[index];
+        var slide = document.querySelectorAll('.swiper-slide')[index];
         if (!slide) return;
-        const el = slide.querySelector('.typewriter-text');
+        var el = slide.querySelector('.typewriter-text');
         if (el && !el.dataset.done) {
-            const str = el.dataset.text.replace(/\\n/g, '\n');
-            let i = 0;
+            var str = el.dataset.text.replace(/\\n/g, '\n');
+            var i = 0;
             el.innerHTML = "";
             el.dataset.done = "true";
             function type() {
@@ -153,20 +148,20 @@
         }
     }
 
-    window.onload = () => {
+    window.onload = function() {
         showStyledModal("⚠️ 發現異常財務活動：Genie 的生日報表需要審核！");
         startTyping(0);
-        setTimeout(() => { swiper.update(); }, 500);
+        setTimeout(function() { mainSwiper.update(); }, 500);
     };
 
-    let found = 0;
+    var foundCount = 0;
     function findError(el, msg) {
         if (el.classList.contains('found')) return;
         el.classList.add('found');
-        found++;
-        document.getElementById('foundCount').innerText = found;
+        foundCount++;
+        document.getElementById('foundCount').innerText = foundCount;
         showStyledModal(msg);
-        if (found === 3) {
+        if (foundCount === 3) {
             document.getElementById('unlockHint').style.display = 'block';
             document.getElementById('vTitle').innerText = "🔓 影片已解鎖";
             document.getElementById('vBox').style.filter = "none";
