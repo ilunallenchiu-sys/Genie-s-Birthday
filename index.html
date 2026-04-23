@@ -148,15 +148,15 @@
     };
 
     var foundNum = 0;
-function findErr(el, msg) {
-    if (el.classList.contains('found')) return;
-    el.classList.add('found');
-    foundNum = foundNum + 1;
-    showStyledModal(msg);
-    if (foundNum === 3) {
-        document.getElementById('unlockHint').style.display = 'block';
-        document.getElementById('vTitle').textContent = "🔓 影片已解鎖";
-        document.getElementById('vBox').style.filter = "none";
+        function findErr(el, msg) {
+        if (el.classList.contains('found')) return;
+        el.classList.add('found');
+        foundNum = foundNum + 1;
+        showStyledModal(msg);
+        if (foundNum === 3) {
+            document.getElementById('unlockHint').style.display = 'block';
+            document.getElementById('vTitle').textContent = "🔓 影片已解鎖";
+            document.getElementById('vBox').style.filter = "none";
         
         // 注意：這裡必須是 pointerEvents (沒有橫線，E 大寫)
         document.getElementById('vBox').style.pointerEvents = "auto"; 
